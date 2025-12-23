@@ -3,21 +3,26 @@ import { useEffect, useState } from "react";
 import MovieList from "../components/MovieList/MovieList";
 import { getTrendingMovies } from "../api/tmdb-api";
 import { Loader, Center, SimpleGrid, Title } from "@mantine/core";
+import { MovieGridSkeleton } from "../components/MovieCard/MovieGridSkeleton";
 
 const HomePage = () => {
-  const [trendingMoviesList, setTrendingMoviesList] = useState(null);
+  const [trendingMoviesList, setTrendingMoviesList] = useState([]);
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTrendingMovies = async () => {
       setError(false);
       try {
+        setLoading(true);
         const movies = await getTrendingMovies();
         setTrendingMoviesList(movies);
         console.log(movies);
       } catch (error) {
         setError(error);
         console.error("Error fetching trending movies:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchTrendingMovies();
@@ -25,20 +30,25 @@ const HomePage = () => {
   if (error) {
     return <div>Something went wrong: {error.message}</div>;
   }
-  if (!trendingMoviesList) {
-    return (
-      <Center style={{ height: "100vh" }}>
-        <Loader size="xl" variant="dots" />
-      </Center>
-    );
-  }
+  // if (!trendingMoviesList) {
+  //   return (
+  //     <Center style={{ height: "100vh" }}>
+  //       <Loader size="xl" variant="dots" />
+  //     </Center>
+  //   );
+  // }
 
   return (
     <>
       <Title order={1} mb="xl">
         Trending today
       </Title>
-      <MovieList moviesList={trendingMoviesList} />
+      {/* <MovieList moviesList={trendingMoviesList} /> */}
+      {loading ? (
+        <MovieGridSkeleton count={8} />
+      ) : (
+        <MovieList moviesList={trendingMoviesList} />
+      )}
     </>
   );
 };
