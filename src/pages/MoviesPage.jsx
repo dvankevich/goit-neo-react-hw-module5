@@ -1,6 +1,14 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { TextInput, Button, Group, Title, Stack, Text } from "@mantine/core";
+import {
+  TextInput,
+  Button,
+  Group,
+  Title,
+  Stack,
+  Text,
+  CloseButton,
+} from "@mantine/core";
 import { useForm } from "@mantine/form"; // Хук для валідації
 import { notifications } from "@mantine/notifications"; // Спливаючі вікна
 import { HiSearch } from "react-icons/hi";
@@ -59,6 +67,13 @@ const MoviesPage = () => {
     setSearchParams({ query: values.search.trim() });
   };
 
+  // Функція для повного очищення
+  const handleClear = () => {
+    form.setFieldValue("search", ""); // Очищаємо поле у формі
+    setSearchParams({}); // Очищаємо URL-параметри
+    setMovies([]); // Прибираємо результати пошуку
+  };
+
   return (
     <Stack gap="xl">
       <Title order={2}>Пошук фільмів</Title>
@@ -70,6 +85,16 @@ const MoviesPage = () => {
             placeholder="Введіть назву фільму..."
             style={{ flex: 1 }}
             leftSection={<HiSearch size={18} />}
+            // Додаємо кнопку очищення в праву частину інпута
+            rightSectionPointerEvents="all"
+            rightSection={
+              form.values.search ? (
+                <CloseButton
+                  aria-label="Очистити пошук"
+                  onClick={handleClear}
+                />
+              ) : null
+            }
             {...form.getInputProps("search")} // Зв'язує інпут з валідацією
           />
           <Button type="submit" loading={loading}>
