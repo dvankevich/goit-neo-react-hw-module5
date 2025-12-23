@@ -1,15 +1,9 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import {
-  TextInput,
-  Button,
-  Group,
-  Title,
-  Stack,
-  Center,
-  Text,
-} from "@mantine/core";
-import { HiSearch } from "react-icons/hi"; // Або інша іконка
+import { TextInput, Button, Group, Title, Stack, Text } from "@mantine/core";
+import { useForm } from "@mantine/form"; // Хук для валідації
+import { notifications } from "@mantine/notifications"; // Спливаючі вікна
+import { HiSearch } from "react-icons/hi";
 import { searchMovies } from "../api/tmdb-api";
 import MovieList from "../components/MovieList/MovieList";
 import { MovieGridSkeleton } from "../components/MovieCard/MovieGridSkeleton";
@@ -17,14 +11,24 @@ import { MovieGridSkeleton } from "../components/MovieCard/MovieGridSkeleton";
 const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  // Працюємо з URL-параметрами (?query=batman)
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get("query") || "";
 
+  // 1. Налаштування валідації форми
+  const form = useForm({
+    initialValues: {
+      search: query,
+    },
+    validate: {
+      search: (value) => {
+        if (value.trim().length === 0) return "Запит не може бути порожнім";
+        if (value.trim().length < 2) return "Введіть хоча б 2 символи";
+        return null;
+      },
+    },
+  });
+
   useEffect(() => {
-    // Якщо в URL немає запиту, нічого не шукаємо
     if (!query) {
       setMovies([]);
       return;
@@ -33,45 +37,40 @@ const MoviesPage = () => {
     const fetchResults = async () => {
       try {
         setLoading(true);
-        setError(null);
         const results = await searchMovies(query);
         setMovies(results);
       } catch (err) {
-        setError("Не вдалося завантажити фільми. Спробуйте пізніше.");
-        console.error(err);
+        notifications.show({
+          title: "Помилка",
+          message: "Не вдалося завантажити дані",
+          color: "red",
+        });
+        console.error("Error fetching search results:", err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchResults();
-  }, [query]); // Спрацьовує кожного разу, коли змінюється query в URL
+  }, [query]);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const value = form.elements.searchInput.value.trim();
-
-    if (value === "") return;
-
-    // Оновлюємо URL-параметр
-    setSearchParams({ query: value });
+  // 2. Обробка відправки форми
+  const handleSearch = (values) => {
+    setSearchParams({ query: values.search.trim() });
   };
 
   return (
     <Stack gap="xl">
       <Title order={2}>Пошук фільмів</Title>
 
-      {/* Форма пошуку */}
-      <form onSubmit={handleSubmit}>
-        <Group align="flex-end">
+      {/* 3. Використання form.onSubmit */}
+      <form onSubmit={form.onSubmit(handleSearch)}>
+        <Group align="flex-start">
           <TextInput
-            label="Назва фільму"
-            placeholder="Наприклад, Interstellar"
-            name="searchInput"
-            defaultValue={query} // Початкове значення з URL
-            leftSection={<HiSearch size={18} />}
+            placeholder="Введіть назву фільму..."
             style={{ flex: 1 }}
+            leftSection={<HiSearch size={18} />}
+            {...form.getInputProps("search")} // Зв'язує інпут з валідацією
           />
           <Button type="submit" loading={loading}>
             Пошук
@@ -79,22 +78,17 @@ const MoviesPage = () => {
         </Group>
       </form>
 
-      {/* Відображення результатів */}
       {loading ? (
         <MovieGridSkeleton count={8} />
-      ) : error ? (
-        <Text c="red" textAlign="center">
-          {error}
-        </Text>
       ) : movies.length > 0 ? (
         <MovieList moviesList={movies} />
-      ) : query && !loading ? (
-        <Center mt="xl">
-          <Text size="lg" c="dimmed">
-            За запитом "{query}" нічого не знайдено 🔍
+      ) : (
+        query && (
+          <Text c="dimmed" textAlign="center">
+            Нічого не знайдено
           </Text>
-        </Center>
-      ) : null}
+        )
+      )}
     </Stack>
   );
 };
