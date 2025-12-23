@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import MovieList from "../components/MovieList/MovieList";
 import { getTrendingMovies } from "../api/tmdb-api";
 import { Loader, Center, SimpleGrid, Title } from "@mantine/core";
-//import MovieCard from "../components/MovieCard/MovieCard";
 
 const HomePage = () => {
   const [trendingMoviesList, setTrendingMoviesList] = useState(null);
@@ -23,15 +22,18 @@ const HomePage = () => {
     };
     fetchTrendingMovies();
   }, []);
-  // можливо треба перенести цей useEffect в компонент App і передавати значення trendingMoviesList пропсом.
-  // дані не так часто змінюються і достатньо їх отримувати один раз при монтуванні головної сторінки.
+  if (error) {
+    return <div>Something went wrong: {error.message}</div>;
+  }
+  if (!trendingMoviesList) {
+    return (
+      <Center style={{ height: "100vh" }}>
+        <Loader size="xl" variant="dots" />
+      </Center>
+    );
+  }
 
   return (
-    // <div>
-    //   <h2>Trending Today</h2>
-    //   {error && <p>Error loading data.</p>}
-    //   <MovieList moviesList={trendingMoviesList} />
-    // </div>
     <>
       <Title order={1} mb="xl">
         Trending today
