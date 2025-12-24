@@ -1,0 +1,39 @@
+.root {
+  padding-top: 80px;
+  padding-bottom: 80px;
+  position: relative;
+}
+
+.label {
+  text-align: center;
+  font-weight: 900;
+  font-size: 220px;
+  line-height: 1;
+  margin-bottom: calc(var(--mantine-spacing-xl) * 1.5);
+  color: var(--mantine-color-gray-2);
+
+  @media (max-width: 768px) {
+    font-size: 120px;
+  }
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+}
+
+.title {
+  font-family: Greycliff CF, var(--mantine-font-family);
+  font-weight: 900;
+  font-size: 38px;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 32px;
+  }
+}
+
+.description {
+  max-width: 500px;
+  margin: auto;
+}
