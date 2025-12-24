@@ -43,11 +43,12 @@ const MovieReviews = () => {
 
   if (reviews.length === 0) {
     return (
-      <Paper p="xl" withBorder radius="md" bg="var(--mantine-color-gray-0)">
-        <Text c="dimmed" ta="center">
-          Ми ще не маємо відгуків для цього фільму.
-        </Text>
-      </Paper>
+      // <Paper p="xl" withBorder radius="md" bg="var(--mantine-color-gray-0)">
+      // <Text c="dimmed" ta="center">
+      <Text c="dimmed" ta="center">
+        Ми ще не маємо відгуків для цього фільму.
+      </Text>
+      // </Paper>
     );
   }
 
