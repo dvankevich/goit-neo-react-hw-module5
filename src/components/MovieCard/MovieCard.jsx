@@ -8,7 +8,7 @@ import {
   Transition,
 } from "@mantine/core";
 import { Link } from "react-router-dom";
-import classes from "./MovieCard.module.css"; // Додамо трохи стилів для ховер-ефекту
+import classes from "./MovieCard.module.css";
 
 const MovieCard = ({ movie, location }) => {
   const { id, title, poster_path, vote_average, release_date } = movie;
@@ -18,7 +18,6 @@ const MovieCard = ({ movie, location }) => {
     ? `https://image.tmdb.org/t/p/w500${poster_path}`
     : "https://placehold.co/400x600?text=No+Poster";
 
-  // Форматуємо дату (беремо лише рік)
   const releaseYear = release_date ? release_date.slice(0, 4) : "N/A";
 
   // Визначаємо колір бейджа залежно від рейтингу
@@ -46,18 +45,19 @@ const MovieCard = ({ movie, location }) => {
       </Card.Section>
 
       <Stack mt="md" gap="xs">
-        <Group justify="space-between" wrap="nowrap">
-          <Text fw={700} size="lg" lineClamp={1} title={title}>
-            {title}
+        <Text fw={700} size="lg" lineClamp={1} title={title}>
+          {title}
+        </Text>
+
+        <Group gap="xs">
+          <Text size="sm" c="dimmed">
+            {releaseYear}
           </Text>
-          <Badge color={ratingColor} variant="light">
+
+          <Badge color={ratingColor} variant="light" size="sm">
             {vote_average.toFixed(1)}
           </Badge>
         </Group>
-
-        <Text size="sm" c="dimmed">
-          Рік випуску: {releaseYear}
-        </Text>
       </Stack>
     </Card>
   );
