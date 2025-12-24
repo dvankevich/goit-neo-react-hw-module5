@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import { Layout } from "./components/Layout";
 const HomePage = lazy(() => import("./pages/HomePage"));
 const MoviesPage = lazy(() => import("./pages/MoviesPage"));
+const MovieDetailsPage = lazy(() => import("./pages/MovieDetailsPage"));
 
 function App() {
   return (
@@ -10,11 +11,11 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="movies" element={<MoviesPage />} />
-        {/* <Route path="movies/:movieId" element={<MovieDetailsPage />}>
-          <Route path="cast" element={<MovieCast />} />
-          <Route path="reviews" element={<MovieReviews />} />
+        <Route path="movies/:movieId" element={<MovieDetailsPage />}>
+          {/* <Route path="cast" element={<MovieCast />} />
+          <Route path="reviews" element={<MovieReviews />} /> */}
         </Route>
-        <Route path="*" element={<NotFoundPage />} /> */}
+        {/* <Route path="*" element={<NotFoundPage />} /> */}
       </Route>
     </Routes>
   );
