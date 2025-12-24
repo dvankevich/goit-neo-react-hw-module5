@@ -41,9 +41,8 @@ const HomePage = () => {
   return (
     <>
       <Title order={1} mb="xl">
-        Trending today
+        Trending today (Top 20)
       </Title>
-      {/* <MovieList moviesList={trendingMoviesList} /> */}
       {loading ? (
         <MovieGridSkeleton count={8} />
       ) : (
