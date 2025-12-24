@@ -1,0 +1,23 @@
+.productionLogo {
+  /* Базові стилі для світлої теми */
+  filter: grayscale(100%) brightness(0.2);
+  opacity: 0.8;
+  transition: all 0.2s ease;
+}
+
+.productionLogo:hover {
+  filter: grayscale(0%) invert(0) brightness(1);
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+
+[data-mantine-color-scheme='dark'] .productionLogo {
+  filter: grayscale(100%) invert(1) brightness(1.5);
+  opacity: 0.9;
+}
+
+[data-mantine-color-scheme='dark'] .productionLogo:hover {
+  filter: grayscale(0%) invert(1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+  opacity: 1;
+}
