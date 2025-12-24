@@ -4,7 +4,10 @@ import { Layout } from "./components/Layout";
 const HomePage = lazy(() => import("./pages/HomePage"));
 const MoviesPage = lazy(() => import("./pages/MoviesPage"));
 const MovieDetailsPage = lazy(() => import("./pages/MovieDetailsPage"));
-import MovieCast from "./components/MovieCast/MovieCast";
+const MovieCast = lazy(() => import("./components/MovieCast/MovieCast"));
+const MovieReviews = lazy(() =>
+  import("./components/MovieReviews/MovieReviews")
+);
 
 function App() {
   return (
@@ -14,7 +17,7 @@ function App() {
         <Route path="movies" element={<MoviesPage />} />
         <Route path="movies/:movieId" element={<MovieDetailsPage />}>
           <Route path="cast" element={<MovieCast />} />
-          {/* <Route path="reviews" element={<MovieReviews />} /> */}
+          <Route path="reviews" element={<MovieReviews />} />
         </Route>
         {/* <Route path="*" element={<NotFoundPage />} /> */}
       </Route>
