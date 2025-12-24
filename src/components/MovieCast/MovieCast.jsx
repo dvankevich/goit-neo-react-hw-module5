@@ -68,7 +68,7 @@ const MovieCast = () => {
             <Text fw={600} size="sm" lineClamp={1}>
               {name}
             </Text>
-            <Text size="xs" c="dimmed" italic lineClamp={1}>
+            <Text size="xs" c="dimmed" fontStyle="italic" lineClamp={1}>
               as {character}
             </Text>
           </Stack>
