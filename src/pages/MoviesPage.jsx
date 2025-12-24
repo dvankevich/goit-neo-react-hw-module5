@@ -8,19 +8,24 @@ import {
   Stack,
   Text,
   CloseButton,
+  Center,
 } from "@mantine/core";
 import { useForm } from "@mantine/form"; // Хук для валідації
-import { notifications } from "@mantine/notifications"; // Спливаючі вікна
+//import { notifications } from "@mantine/notifications"; // Спливаючі вікна
 import { HiSearch } from "react-icons/hi";
 import { searchMovies } from "../api/tmdb-api";
 import MovieList from "../components/MovieList/MovieList";
 import { MovieGridSkeleton } from "../components/MovieCard/MovieGridSkeleton";
+import { showError } from "../utils/showError";
+import { ErrorPlaceholder } from "../components/ErrorPlaceholder";
 
 const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get("query") || "";
+  const [error, setError] = useState(null);
+  const [retry, setRetry] = useState(0);
 
   // 1. Налаштування валідації форми
   const form = useForm({
@@ -45,22 +50,19 @@ const MoviesPage = () => {
     const fetchResults = async () => {
       try {
         setLoading(true);
+        setError(null);
         const results = await searchMovies(query);
         setMovies(results);
       } catch (err) {
-        notifications.show({
-          title: "Помилка",
-          message: "Не вдалося завантажити дані",
-          color: "red",
-        });
-        console.error("Error fetching search results:", err);
+        setError(err.message);
+        showError("Помилка пошуку", "Не вдалося отримати дані від сервера.");
       } finally {
         setLoading(false);
       }
     };
 
     fetchResults();
-  }, [query]);
+  }, [query, retry]);
 
   // 2. Обробка відправки форми
   const handleSearch = (values) => {
@@ -103,16 +105,31 @@ const MoviesPage = () => {
         </Group>
       </form>
 
+      {/* 1. Стан завантаження (пріоритет №1) */}
       {loading ? (
         <MovieGridSkeleton count={8} />
-      ) : movies.length > 0 ? (
-        <MovieList moviesList={movies} />
+      ) : /* 2. Стан помилки (пріоритет №2) */
+      error ? (
+        <ErrorPlaceholder
+          message="Не вдалося отримати дані з сервера"
+          onRetry={() => setRetry((prev) => prev + 1)}
+        />
+      ) : /* 3. Перевірка на порожній результат (якщо завантаження завершено і помилок немає) */
+      movies.length === 0 && query ? (
+        <Center py={50}>
+          <Stack align="center" gap="xs">
+            <Text size="xl" fw={500}>
+              Нічого не знайдено 🔍
+            </Text>
+            <Text c="dimmed">
+              За запитом "{query}" не знайшлося жодного фільму. Спробуйте іншу
+              назву.
+            </Text>
+          </Stack>
+        </Center>
       ) : (
-        query && (
-          <Text c="dimmed" textAlign="center">
-            Нічого не знайдено
-          </Text>
-        )
+        /* 4. Відображення списку (якщо дані є) */
+        <MovieList moviesList={movies} />
       )}
     </Stack>
   );

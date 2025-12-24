@@ -23,12 +23,14 @@ import {
 } from "@mantine/core";
 import { HiArrowLeft } from "react-icons/hi";
 import { getMovieDetails } from "../api/tmdb-api";
+import { ErrorPlaceholder } from "../components/ErrorPlaceholder";
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const [retry, setRetry] = useState(0);
+  const [error, setError] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -39,16 +41,18 @@ const MovieDetailsPage = () => {
     const fetchMovieData = async () => {
       try {
         setLoading(true);
+        setError(null);
         const data = await getMovieDetails(movieId);
         setMovie(data);
       } catch (error) {
-        console.error(error);
+        setError(error.message || "Помилка завантаження");
+        //console.error(error);
       } finally {
         setLoading(false);
       }
     };
     fetchMovieData();
-  }, [movieId]);
+  }, [movieId, retry]);
 
   if (loading) {
     return (
@@ -58,7 +62,26 @@ const MovieDetailsPage = () => {
     );
   }
 
-  if (!movie) return <Text>Фільм не знайдено</Text>;
+  if (error) {
+    return (
+      <Container py="xl">
+        <ErrorPlaceholder
+          message={error}
+          onRetry={() => setRetry((prev) => prev + 1)}
+        />
+      </Container>
+    );
+  }
+
+  if (!movie) {
+    return (
+      <Container py="xl">
+        <Text ta="center" size="lg" c="dimmed">
+          Фільм не знайдено
+        </Text>
+      </Container>
+    );
+  }
 
   const { title, poster_path, overview, vote_average, genres, release_date } =
     movie;
