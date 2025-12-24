@@ -15,7 +15,7 @@ const MovieCard = ({ movie, location }) => {
 
   // TMDB постер або заглушка, якщо фото немає
   const imageUrl = poster_path
-    ? `https://image.tmdb.org/t/p/w500${poster_path}`
+    ? `https://image.tmdb.org/t/p/w400${poster_path}`
     : "https://placehold.co/400x600?text=No+Poster";
 
   const releaseYear = release_date ? release_date.slice(0, 4) : "N/A";
@@ -38,7 +38,8 @@ const MovieCard = ({ movie, location }) => {
       <Card.Section>
         <Image
           src={imageUrl}
-          height={320}
+          style={{ aspectRatio: "2 / 3", objectPosition: "top" }}
+          fit="cover"
           alt={title}
           fallbackSrc="https://placehold.co/400x600?text=No+Poster"
         />
