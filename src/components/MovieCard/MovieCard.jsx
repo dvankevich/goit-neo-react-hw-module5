@@ -12,12 +12,12 @@ import classes from "./MovieCard.module.css";
 
 const MovieCard = ({ movie, location }) => {
   const { id, title, poster_path, vote_average, release_date } = movie;
-  
+
 
   // TMDB постер або заглушка, якщо фото немає
   const imageUrl = poster_path
-    ? `https://image.tmdb.org/t/p/w400${poster_path}`
-    : "https://placehold.co/400x600?text=No+Poster";
+    // ? `https://image.tmdb.org/t/p/w400${poster_path}`
+    // : "https://placehold.co/400x600?text=No+Poster";
 
   const releaseYear = release_date ? release_date.slice(0, 4) : "N/A";
 

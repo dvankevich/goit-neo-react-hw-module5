@@ -69,8 +69,8 @@ const MovieCast = () => {
             <Image
               src={
                 profile_path
-                  ? `https://image.tmdb.org/t/p/w200${profile_path}`
-                  : "https://placehold.co/200x300?text=No+Photo"
+                // ? `https://image.tmdb.org/t/p/w200${profile_path}`
+                // : "https://placehold.co/200x300?text=No+Photo"
               }
               height={220}
               alt={name}
