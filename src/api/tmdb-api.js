@@ -1,6 +1,10 @@
 // src/api/tmdb-api.js
 import axios from "axios";
-import { formatMovieData, formatCastData } from "../utils/formatTmdbData";
+import {
+  formatMovieData,
+  formatCastData,
+  formatReviewData,
+} from "../utils/formatTmdbData";
 
 const apiBearer = import.meta.env.VITE_API_BEARER;
 //const apiBearer = ""; // for testing purposes
@@ -79,7 +83,7 @@ export const getMovieCast = async (movieId) => {
 
 export const getMovieReviews = async (movieId) => {
   const response = await tmdbInstance.get(`movie/${movieId}/reviews`);
-  return response.data.results;
+  return response.data.results.map(formatReviewData);
 };
 
 export const searchMovies = async (query, page = 1) => {

@@ -67,18 +67,11 @@ const MovieReviews = () => {
           <Group mb="md">
             <Avatar
               // 1. Використовуємо наш новий хелпер або чисту логіку
-              src={
-                author_details?.avatar_path
-                  ? author_details.avatar_path.startsWith("/http")
-                    ? author_details.avatar_path.substring(1)
-                    : author_details.avatar_path.startsWith("http")
-                    ? author_details.avatar_path
-                    : `https://image.tmdb.org/t/p/w45${author_details.avatar_path}`
-                  : null // Якщо null, Mantine покаже ініціали або placeholder
-              }
+              src={author_details.avatar_path}
               alt={author}
               radius="xl"
               size="md"
+              color="blue"
             >
               {/* 2. Fallback: якщо src=null, Mantine відобразить текст всередині */}
               {author?.charAt(0).toUpperCase()}
