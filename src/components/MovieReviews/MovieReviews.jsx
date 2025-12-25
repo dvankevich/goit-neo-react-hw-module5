@@ -62,7 +62,7 @@ const MovieReviews = () => {
 
   return (
     <Stack gap="lg">
-      {reviews.map(({ id, author, content, author_details }) => (
+      {reviews.map(({ id, author, content, author_details, created_at }) => (
         <Paper key={id} withBorder shadow="xs" p="lg" radius="md">
           <Group mb="md">
             <Avatar
@@ -80,9 +80,9 @@ const MovieReviews = () => {
               <Text size="sm" fw={700}>
                 {author}
               </Text>
-              {/* <Text size="xs" c="dimmed">
-                Author from TMDB
-              </Text> */}
+              <Text size="sm" c="dimmed">
+                {new Date(created_at).toLocaleDateString()}
+              </Text>
             </div>
           </Group>
 
