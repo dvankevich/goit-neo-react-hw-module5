@@ -9,6 +9,7 @@ import {
   Text,
   CloseButton,
   Center,
+  Pagination,
 } from "@mantine/core";
 import { useForm } from "@mantine/form"; // Хук для валідації
 //import { notifications } from "@mantine/notifications"; // Спливаючі вікна
@@ -26,6 +27,8 @@ const MoviesPage = () => {
   const query = searchParams.get("query") || "";
   const [error, setError] = useState(null);
   const [retry, setRetry] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const page = parseInt(searchParams.get("page") || "1", 10); // get current page from URL or default to 1
 
   // 1. Налаштування валідації форми
   const form = useForm({
@@ -51,8 +54,9 @@ const MoviesPage = () => {
       try {
         setLoading(true);
         setError(null);
-        const results = await searchMovies(query);
-        setMovies(results);
+        const data = await searchMovies(query, page);
+        setMovies(data.results);
+        setTotalPages(data.total_pages > 500 ? 500 : data.total_pages); // TMDB API max page limit is 500
       } catch (err) {
         setError(err.message);
         showError("Помилка пошуку", "Не вдалося отримати дані від сервера.");
@@ -62,11 +66,11 @@ const MoviesPage = () => {
     };
 
     fetchResults();
-  }, [query, retry]);
+  }, [query, retry, page]);
 
   // 2. Обробка відправки форми
   const handleSearch = (values) => {
-    setSearchParams({ query: values.search.trim() });
+    setSearchParams({ query: values.search.trim(), page: "1" });
   };
 
   // Функція для повного очищення
@@ -74,6 +78,11 @@ const MoviesPage = () => {
     form.setFieldValue("search", ""); // Очищаємо поле у формі
     setSearchParams({}); // Очищаємо URL-параметри
     setMovies([]); // Прибираємо результати пошуку
+  };
+
+  const handlePageChange = (newPage) => {
+    setSearchParams({ query, page: newPage.toString() });
+    window.scrollTo({ top: 0, behavior: "smooth" }); // scroll to top on page change
   };
 
   return (
@@ -129,7 +138,22 @@ const MoviesPage = () => {
         </Center>
       ) : (
         /* 4. Відображення списку (якщо дані є) */
-        <MovieList moviesList={movies} />
+        <>
+          <MovieList moviesList={movies} />
+
+          {/* Додаємо компонент пагінації */}
+          {totalPages > 1 && (
+            <Center mt="xl" mb="xl">
+              <Pagination
+                value={page}
+                onChange={handlePageChange}
+                total={totalPages}
+                color="blue"
+                withEdges
+              />
+            </Center>
+          )}
+        </>
       )}
     </Stack>
   );
