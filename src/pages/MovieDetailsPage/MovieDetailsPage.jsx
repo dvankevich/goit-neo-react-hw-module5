@@ -159,10 +159,10 @@ const MovieDetailsPage = () => {
                 variant="gradient"
                 gradient={{ from: "orange", to: "red" }}
               >
-                Рейтинг: {vote_average.toFixed(1)}
+                Rating: {vote_average.toFixed(1)}
               </Badge>
               <Badge size="lg" color="gray" variant="outline">
-                {runtime} хв.
+                {runtime} min
               </Badge>
               <Badge size="lg" color="blue" variant="light">
                 {status === "Released" ? "Released" : "Expected"}
