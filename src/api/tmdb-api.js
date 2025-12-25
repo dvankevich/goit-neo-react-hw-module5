@@ -22,15 +22,18 @@ const tmdbInstance = axios.create({
 
 // Додаємо перехоплювач (Interceptor) для обробки відповідей
 tmdbInstance.interceptors.response.use(
-  (response) => response, // Якщо все добре, просто повертаємо відповідь
+  (response) => response,
   (error) => {
     let message = "An unexpected error occurred.";
 
-    if (!error.response) {
-      // Помилка мережі (наприклад, немає інтернету)
-      message = "Network error. Please check your internet connection.";
-    } else {
-      // Помилки від сервера (401, 404, 500 тощо)
+    // 1. Помилки з'єднання / Таймаути / Мережа
+    if (error.code === "ECONNABORTED") {
+      message = "Request timed out. Please try again.";
+    } else if (error.code === "ERR_NETWORK") {
+      message = "Network error. Check your connection.";
+    }
+    // 2. Запит було зроблено, але сервер відповів помилкою (4xx, 5xx)
+    else if (error.response) {
       switch (error.response.status) {
         case 401:
           message = "Unauthorized: Check your API key.";
@@ -42,14 +45,17 @@ tmdbInstance.interceptors.response.use(
           message = "Server error. Please try again later.";
           break;
         default:
-          // Спроба взяти текст помилки прямо від TMDB
           message = error.response.data.status_message || message;
       }
     }
+    // 3. Запит було зроблено, але відповіді немає (Server down)
+    else if (error.request) {
+      message = "Server is not responding. Please try again later.";
+    }
 
-    // Створюємо об'єкт помилки, який ми "прокинемо" далі в компонент
     const customError = new Error(message);
     customError.status = error.response?.status;
+    customError.code = error.code; // Передаємо код далі для глибшої логіки
 
     return Promise.reject(customError);
   }

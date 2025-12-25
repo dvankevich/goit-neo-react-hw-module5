@@ -24,6 +24,7 @@ const MovieCast = () => {
     const fetchCast = async () => {
       try {
         setLoading(true);
+        setError(null);
         const data = await getMovieCast(movieId);
         setCast(data);
       } catch (error) {
