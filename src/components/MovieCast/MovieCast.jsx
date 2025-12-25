@@ -16,6 +16,8 @@ const MovieCast = () => {
   const { movieId } = useParams();
   const [cast, setCast] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [retry, setRetry] = useState(0);
 
   useEffect(() => {
     const fetchCast = async () => {
@@ -24,13 +26,17 @@ const MovieCast = () => {
         const data = await getMovieCast(movieId);
         setCast(data);
       } catch (error) {
-        console.error("Помилка при завантаженні акторів:", error);
+        setError(error.message);
+        console.error(
+          "Помилка при завантаженні інформації про акторів:",
+          error
+        );
       } finally {
         setLoading(false);
       }
     };
     fetchCast();
-  }, [movieId]);
+  }, [movieId, retry]);
 
   if (loading) {
     return (
@@ -39,6 +45,14 @@ const MovieCast = () => {
       </Center>
     );
   }
+
+  if (error)
+    return (
+      <ErrorPlaceholder
+        message={error}
+        onRetry={() => setRetry((prev) => prev + 1)}
+      />
+    );
 
   if (cast.length === 0) {
     return (

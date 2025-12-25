@@ -17,6 +17,8 @@ const MovieReviews = () => {
   const { movieId } = useParams();
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [retry, setRetry] = useState(0);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -25,13 +27,13 @@ const MovieReviews = () => {
         const data = await getMovieReviews(movieId);
         setReviews(data);
       } catch (error) {
-        console.error("Помилка при завантаженні відгуків:", error);
+        setError(error.message);
       } finally {
         setLoading(false);
       }
     };
     fetchReviews();
-  }, [movieId]);
+  }, [movieId, retry]);
 
   if (loading) {
     return (
@@ -41,15 +43,19 @@ const MovieReviews = () => {
     );
   }
 
+  if (error)
+    return (
+      <ErrorPlaceholder
+        message={error}
+        onRetry={() => setRetry((prev) => prev + 1)}
+      />
+    );
+
   if (reviews.length === 0) {
     return (
-      // <Paper p="xl" withBorder radius="md" bg="var(--mantine-color-gray-0)">
-      // <Text c="dimmed" ta="center">
       <Text c="dimmed" ta="center">
-        {/* Ми ще не маємо відгуків для цього фільму. */}
         We don't have any reviews for this movie yet.
       </Text>
-      // </Paper>
     );
   }
 
@@ -77,13 +83,7 @@ const MovieReviews = () => {
             </div>
           </Group>
 
-          <Spoiler
-            maxHeight={120}
-            // showLabel="Показати більше"
-            showLabel="Show more"
-            //hideLabel="Сховати"
-            hideLabel="Hide"
-          >
+          <Spoiler maxHeight={120} showLabel="Show more" hideLabel="Hide">
             <Text size="sm" style={{ lineHeight: 1.6 }}>
               {content}
             </Text>

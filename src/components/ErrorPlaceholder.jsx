@@ -1,29 +1,28 @@
 import { Title, Text, Button, Stack, Center } from "@mantine/core";
-import { HiOutlineExclamationTriangle } from "react-icons/hi2";
+import { HiOutlineCloud, HiOutlineExclamationTriangle } from "react-icons/hi2";
 
 export const ErrorPlaceholder = ({ message, onRetry }) => {
+  const isNetworkError = message.toLowerCase().includes("network");
+
   return (
     <Center py={50}>
       <Stack align="center" gap="md">
-        <HiOutlineExclamationTriangle
-          size={50}
-          color="var(--mantine-color-red-6)"
-        />
-        {/* <Title order={3}>Ой! Щось пішло не так</Title> */}
-        <Title order={3}>Oops! Something went wrong.</Title>
-        <Text c="dimmed" ta="center" maw={400}>
-          {/* {message ||
-            "Не вдалося завантажити дані. Перевірте підключення до інтернету."} */}
-          {message || "Failed to load data. Check your internet connection."}
-        </Text>
-        {onRetry && (
-          <Button variant="light" color="blue" onClick={onRetry}>
-            {/* Спробувати знову */}
-            Try again
-          </Button>
+        {isNetworkError ? (
+          <HiOutlineCloud size={50} color="var(--mantine-color-gray-5)" />
+        ) : (
+          <HiOutlineExclamationTriangle
+            size={50}
+            color="var(--mantine-color-red-6)"
+          />
         )}
+        <Title order={3}>{isNetworkError ? "Connection Issue" : "Oops!"}</Title>
+        <Text c="dimmed" ta="center" maw={400}>
+          {message}
+        </Text>
+        {onRetry && <Button onClick={onRetry}>Try again</Button>}
       </Stack>
     </Center>
   );
 };
+
 export default ErrorPlaceholder;

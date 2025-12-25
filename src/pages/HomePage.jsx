@@ -2,33 +2,39 @@
 import { useEffect, useState } from "react";
 import MovieList from "../components/MovieList/MovieList";
 import { getTrendingMovies } from "../api/tmdb-api";
-import { Loader, Center, SimpleGrid, Title } from "@mantine/core";
+import { Title } from "@mantine/core";
 import { MovieGridSkeleton } from "../components/MovieCard/MovieGridSkeleton";
 
 const HomePage = () => {
   const [trendingMoviesList, setTrendingMoviesList] = useState([]);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTrendingMovies = async () => {
-      setError(false);
+      setError(null);
       try {
         setLoading(true);
         const movies = await getTrendingMovies();
         setTrendingMoviesList(movies);
         console.log(movies);
       } catch (error) {
-        setError(error);
         console.error("Error fetching trending movies:", error);
+        setError(error.message || "Failed to load trending movies");
       } finally {
         setLoading(false);
       }
     };
     fetchTrendingMovies();
   }, []);
+
   if (error) {
-    return <div>Something went wrong: {error.message}</div>;
+    return (
+      <ErrorPlaceholder
+        message={error}
+        onRetry={() => window.location.reload()}
+      />
+    );
   }
 
   return (
