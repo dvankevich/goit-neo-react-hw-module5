@@ -29,10 +29,7 @@ const MovieCast = () => {
         setCast(data);
       } catch (error) {
         setError(error.message);
-        console.error(
-          "Помилка при завантаженні інформації про акторів:",
-          error
-        );
+        console.error("Error loading actor information:", error);
       } finally {
         setLoading(false);
       }
@@ -59,7 +56,7 @@ const MovieCast = () => {
   if (cast.length === 0) {
     return (
       <Text c="dimmed" ta="center" py="xl">
-        Інформація про акторів відсутня.
+        There is no information about the actors.
       </Text>
     );
   }
