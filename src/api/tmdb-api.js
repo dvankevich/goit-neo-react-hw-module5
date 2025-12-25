@@ -4,7 +4,7 @@ import {
   formatMovieData,
   formatCastData,
   formatReviewData,
-} from "../utils/formatTmdbData";
+} from "../utils/formatTmdbData.js";
 
 const apiBearer = import.meta.env.VITE_API_BEARER;
 //const apiBearer = ""; // for testing purposes
