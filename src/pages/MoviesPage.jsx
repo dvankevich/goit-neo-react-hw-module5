@@ -53,13 +53,19 @@ const MoviesPage = () => {
     const fetchResults = async () => {
       try {
         setLoading(true);
-        setError(null);
+        setError(null); // Скидаємо помилку перед новим запитом
         const data = await searchMovies(query, page);
         setMovies(data.results);
-        setTotalPages(data.total_pages > 500 ? 500 : data.total_pages); // TMDB API max page limit is 500
+        setTotalPages(data.total_pages > 500 ? 500 : data.total_pages);
       } catch (err) {
-        setError(err.message);
-        showError("Search error", "Failed to retrieve data from the server.");
+        if (page === 1) {
+          // Якщо впала перша сторінка — показуємо великий ErrorPlaceholder
+          setError(err.message);
+        } else {
+          // Якщо впала пагінація — показуємо лише нотифікацію
+          // Ми НЕ викликаємо setError, тому список фільмів не зникає
+          showError("Unable to load next page", err.message);
+        }
       } finally {
         setLoading(false);
       }
@@ -117,7 +123,7 @@ const MoviesPage = () => {
       ) : /* 2. Стан помилки (пріоритет №2) */
       error ? (
         <ErrorPlaceholder
-          message="Failed to retrieve data from the server."
+          message={error}
           onRetry={() => setRetry((prev) => prev + 1)}
         />
       ) : /* 3. Перевірка на порожній результат (якщо завантаження завершено і помилок немає) */
