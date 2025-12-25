@@ -30,13 +30,6 @@ const HomePage = () => {
   if (error) {
     return <div>Something went wrong: {error.message}</div>;
   }
-  // if (!trendingMoviesList) {
-  //   return (
-  //     <Center style={{ height: "100vh" }}>
-  //       <Loader size="xl" variant="dots" />
-  //     </Center>
-  //   );
-  // }
 
   return (
     <>

@@ -9,14 +9,17 @@ export const ErrorPlaceholder = ({ message, onRetry }) => {
           size={50}
           color="var(--mantine-color-red-6)"
         />
-        <Title order={3}>Ой! Щось пішло не так</Title>
+        {/* <Title order={3}>Ой! Щось пішло не так</Title> */}
+        <Title order={3}>Oops! Something went wrong.</Title>
         <Text c="dimmed" ta="center" maw={400}>
-          {message ||
-            "Не вдалося завантажити дані. Перевірте підключення до інтернету."}
+          {/* {message ||
+            "Не вдалося завантажити дані. Перевірте підключення до інтернету."} */}
+          {message || "Failed to load data. Check your internet connection."}
         </Text>
         {onRetry && (
           <Button variant="light" color="blue" onClick={onRetry}>
-            Спробувати знову
+            {/* Спробувати знову */}
+            Try again
           </Button>
         )}
       </Stack>

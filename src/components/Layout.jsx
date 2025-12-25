@@ -23,10 +23,10 @@ export const Layout = () => {
             <Group gap="xl">
               <Group gap="md">
                 <Anchor component={Link} to="/" fw={500}>
-                  Головна
+                  Home
                 </Anchor>
                 <Anchor component={Link} to="/movies" fw={500}>
-                  Пошук
+                  Search
                 </Anchor>
               </Group>
 

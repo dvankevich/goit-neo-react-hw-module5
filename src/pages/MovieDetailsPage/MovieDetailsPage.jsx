@@ -49,8 +49,7 @@ const MovieDetailsPage = () => {
         setMovie(data);
         console.log(data);
       } catch (error) {
-        setError(error.message || "Помилка завантаження");
-        //console.error(error);
+        setError(error.message || "Network error");
       } finally {
         setLoading(false);
       }
@@ -81,7 +80,7 @@ const MovieDetailsPage = () => {
     return (
       <Container py="xl">
         <Text ta="center" size="lg" c="dimmed">
-          Фільм не знайдено
+          Movie not found
         </Text>
       </Container>
     );
@@ -105,12 +104,12 @@ const MovieDetailsPage = () => {
   } = movie;
 
   const formattedDate = release_date
-    ? new Date(release_date).toLocaleDateString("uk-UA", {
+    ? new Date(release_date).toLocaleDateString("en-US", {
         day: "numeric",
         month: "long",
         year: "numeric",
       })
-    : "Дата невідома";
+    : "Date unknown";
 
   return (
     <Container size="lg" py="xl">
@@ -122,7 +121,7 @@ const MovieDetailsPage = () => {
         leftSection={<HiArrowLeft />}
         mb="xl"
       >
-        Назад до списку
+        Back
       </Button>
 
       <Grid gutter="xl">
@@ -166,7 +165,7 @@ const MovieDetailsPage = () => {
                 {runtime} хв.
               </Badge>
               <Badge size="lg" color="blue" variant="light">
-                {status === "Released" ? "Вийшов" : "Очікується"}
+                {status === "Released" ? "Released" : "Expected"}
               </Badge>
 
               {homepage && (
@@ -177,7 +176,7 @@ const MovieDetailsPage = () => {
                   fw={500}
                   underline="hover"
                 >
-                  Офіційний сайт{" "}
+                  Official site{" "}
                   <HiExternalLink
                     size={14}
                     style={{ verticalAlign: "middle" }}
@@ -197,42 +196,28 @@ const MovieDetailsPage = () => {
             <Grid gutter="xs" mt="sm">
               <Grid.Col span={6}>
                 <Text size="sm" fw={700}>
-                  Прем'єра:
+                  Premiere:
                 </Text>
                 <Text size="sm">{formattedDate}</Text>
               </Grid.Col>
 
-              {/* <Grid.Col span={6}>
-                <Text size="sm" fw={700}>
-                  Статус:
-                </Text>
-                <Text size="sm">
-                  {status === "Released" ? "Вже у прокаті" : "Очікується"}
-                </Text>
-              </Grid.Col> */}
               <Grid.Col span={6}>
                 <Text size="sm" fw={700}>
-                  Країна:
+                  Country:
                 </Text>
                 <Text size="sm">
                   {production_countries?.map((c) => c.name).join(", ") || "N/A"}
                 </Text>
               </Grid.Col>
-              {/* <Grid.Col span={6}>
-                <Text size="sm" fw={700}>
-                  Жанри:
-                </Text>
-                <Text size="sm">{genres?.map((g) => g.name).join(", ")}</Text>
-              </Grid.Col> */}
               <Grid.Col span={6}>
                 <Text size="sm" fw={700}>
-                  Бюджет:
+                  Budget:
                 </Text>
                 <Text size="sm">${budget?.toLocaleString() || "0"}</Text>
               </Grid.Col>
               <Grid.Col span={6}>
                 <Text size="sm" fw={700}>
-                  Збори:
+                  Total Revenue:
                 </Text>
                 <Text size="sm">${revenue?.toLocaleString() || "0"}</Text>
               </Grid.Col>
@@ -240,9 +225,9 @@ const MovieDetailsPage = () => {
 
             <Divider />
 
-            <Title order={3}>Огляд</Title>
+            <Title order={3}>Review</Title>
             <Text size="lg" lh={1.6}>
-              {overview || "Опис фільму відсутній."}
+              {overview || "There is no description of the movie."}
             </Text>
           </Stack>
           {/* Блок кінокомпаній */}
@@ -253,7 +238,7 @@ const MovieDetailsPage = () => {
               c="dimmed"
               style={{ textTransform: "uppercase", letterSpacing: "1px" }}
             >
-              Виробництво
+              Production
             </Title>
             <Group gap="xl" wrap="wrap">
               {production_companies?.map((company) => (
@@ -280,7 +265,7 @@ const MovieDetailsPage = () => {
         </Grid.Col>
       </Grid>
 
-      <Divider my="xl" label="Додаткова інформація" labelPosition="center" />
+      <Divider my="xl" label="Additional information" labelPosition="center" />
 
       {/* Навігація всередині сторінки через Tabs */}
       <Tabs
@@ -290,10 +275,10 @@ const MovieDetailsPage = () => {
       >
         <Tabs.List mb="md">
           <Tabs.Tab value="cast" component={Link} to="cast">
-            Акторський склад
+            Cast
           </Tabs.Tab>
           <Tabs.Tab value="reviews" component={Link} to="reviews">
-            Відгуки
+            Reviews
           </Tabs.Tab>
         </Tabs.List>
 

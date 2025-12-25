@@ -46,7 +46,8 @@ const MovieReviews = () => {
       // <Paper p="xl" withBorder radius="md" bg="var(--mantine-color-gray-0)">
       // <Text c="dimmed" ta="center">
       <Text c="dimmed" ta="center">
-        Ми ще не маємо відгуків для цього фільму.
+        {/* Ми ще не маємо відгуків для цього фільму. */}
+        We don't have any reviews for this movie yet.
       </Text>
       // </Paper>
     );
@@ -78,8 +79,10 @@ const MovieReviews = () => {
 
           <Spoiler
             maxHeight={120}
-            showLabel="Показати більше"
-            hideLabel="Сховати"
+            // showLabel="Показати більше"
+            showLabel="Show more"
+            //hideLabel="Сховати"
+            hideLabel="Hide"
           >
             <Text size="sm" style={{ lineHeight: 1.6 }}>
               {content}

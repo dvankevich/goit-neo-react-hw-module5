@@ -37,8 +37,8 @@ const MoviesPage = () => {
     },
     validate: {
       search: (value) => {
-        if (value.trim().length === 0) return "Запит не може бути порожнім";
-        if (value.trim().length < 2) return "Введіть хоча б 2 символи";
+        if (value.trim().length === 0) return "Request cannot be empty.";
+        if (value.trim().length < 2) return "Enter at least 2 characters";
         return null;
       },
     },
@@ -59,7 +59,7 @@ const MoviesPage = () => {
         setTotalPages(data.total_pages > 500 ? 500 : data.total_pages); // TMDB API max page limit is 500
       } catch (err) {
         setError(err.message);
-        showError("Помилка пошуку", "Не вдалося отримати дані від сервера.");
+        showError("Search error", "Failed to retrieve data from the server.");
       } finally {
         setLoading(false);
       }
@@ -87,29 +87,26 @@ const MoviesPage = () => {
 
   return (
     <Stack gap="xl">
-      <Title order={2}>Пошук фільмів</Title>
+      <Title order={2}>Movies search</Title>
 
       {/* 3. Використання form.onSubmit */}
       <form onSubmit={form.onSubmit(handleSearch)}>
         <Group align="flex-start">
           <TextInput
-            placeholder="Введіть назву фільму..."
+            placeholder="Enter movie title..."
             style={{ flex: 1 }}
             leftSection={<HiSearch size={18} />}
             // Додаємо кнопку очищення в праву частину інпута
             rightSectionPointerEvents="all"
             rightSection={
               form.values.search ? (
-                <CloseButton
-                  aria-label="Очистити пошук"
-                  onClick={handleClear}
-                />
+                <CloseButton aria-label="Clear search" onClick={handleClear} />
               ) : null
             }
             {...form.getInputProps("search")} // Зв'язує інпут з валідацією
           />
           <Button type="submit" loading={loading}>
-            Пошук
+            Search
           </Button>
         </Group>
       </form>
@@ -120,7 +117,7 @@ const MoviesPage = () => {
       ) : /* 2. Стан помилки (пріоритет №2) */
       error ? (
         <ErrorPlaceholder
-          message="Не вдалося отримати дані з сервера"
+          message="Failed to retrieve data from the server."
           onRetry={() => setRetry((prev) => prev + 1)}
         />
       ) : /* 3. Перевірка на порожній результат (якщо завантаження завершено і помилок немає) */
@@ -128,11 +125,10 @@ const MoviesPage = () => {
         <Center py={50}>
           <Stack align="center" gap="xs">
             <Text size="xl" fw={500}>
-              Нічого не знайдено 🔍
+              Nothing found 🔍
             </Text>
             <Text c="dimmed">
-              За запитом "{query}" не знайшлося жодного фільму. Спробуйте іншу
-              назву.
+              Nothing found for "{query}". Try another title.
             </Text>
           </Stack>
         </Center>
