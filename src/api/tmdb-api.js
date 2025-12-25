@@ -1,5 +1,6 @@
 // src/api/tmdb-api.js
 import axios from "axios";
+import { formatMovieData, formatCastData } from "../utils/formatTmdbData";
 
 const apiBearer = import.meta.env.VITE_API_BEARER;
 //const apiBearer = ""; // for testing purposes
@@ -63,17 +64,17 @@ tmdbInstance.interceptors.response.use(
 
 export const getTrendingMovies = async (timeWindow = "day") => {
   const response = await tmdbInstance.get(`trending/movie/${timeWindow}`);
-  return response.data.results;
+  return response.data.results.map(formatMovieData);
 };
 
 export const getMovieDetails = async (movieId) => {
   const response = await tmdbInstance.get(`movie/${movieId}`);
-  return response.data;
+  return formatMovieData(response.data);
 };
 
 export const getMovieCast = async (movieId) => {
   const response = await tmdbInstance.get(`movie/${movieId}/credits`);
-  return response.data.cast;
+  return response.data.cast.map(formatCastData);
 };
 
 export const getMovieReviews = async (movieId) => {
@@ -89,5 +90,8 @@ export const searchMovies = async (query, page = 1) => {
       include_adult: false,
     },
   });
-  return response.data;
+  return {
+    ...response.data,
+    results: response.data.results.map(formatMovieData),
+  };
 };

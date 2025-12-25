@@ -11,8 +11,8 @@ import { Link } from "react-router-dom";
 import classes from "./MovieCard.module.css";
 
 const MovieCard = ({ movie, location }) => {
-  const { id, title, poster_path, tmdbvote_average, release_date } = movie;
-  const vote_average = tmdbvote_average || 0;
+  const { id, title, poster_path, vote_average, release_date } = movie;
+  
 
   // TMDB постер або заглушка, якщо фото немає
   const imageUrl = poster_path
