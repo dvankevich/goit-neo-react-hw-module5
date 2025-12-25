@@ -91,6 +91,55 @@ const MoviesPage = () => {
     window.scrollTo({ top: 0, behavior: "smooth" }); // scroll to top on page change
   };
 
+  const renderContent = () => {
+    if (loading) return <MovieGridSkeleton count={8} />;
+
+    if (error) {
+      return (
+        <ErrorPlaceholder
+          message={error}
+          onRetry={() => setRetry((prev) => prev + 1)}
+        />
+      );
+    }
+
+    if (movies.length === 0 && query) {
+      return (
+        <Center py={50}>
+          <Stack align="center" gap="xs">
+            <Text size="xl" fw={500}>
+              Nothing found 🔍
+            </Text>
+            <Text c="dimmed">
+              Nothing found for "{query}". Try another title.
+            </Text>
+          </Stack>
+        </Center>
+      );
+    }
+
+    if (movies.length > 0) {
+      return (
+        <>
+          <MovieList moviesList={movies} />
+          {totalPages > 1 && (
+            <Center mt="xl" mb="xl">
+              <Pagination
+                value={page}
+                onChange={handlePageChange}
+                total={totalPages}
+                color="blue"
+                withEdges
+              />
+            </Center>
+          )}
+        </>
+      );
+    }
+
+    return null; // Якщо пошуку ще не було
+  };
+
   return (
     <Stack gap="xl">
       <Title order={2}>Movies search</Title>
@@ -117,46 +166,7 @@ const MoviesPage = () => {
         </Group>
       </form>
 
-      {/* 1. Стан завантаження (пріоритет №1) */}
-      {loading ? (
-        <MovieGridSkeleton count={8} />
-      ) : /* 2. Стан помилки (пріоритет №2) */
-      error ? (
-        <ErrorPlaceholder
-          message={error}
-          onRetry={() => setRetry((prev) => prev + 1)}
-        />
-      ) : /* 3. Перевірка на порожній результат (якщо завантаження завершено і помилок немає) */
-      movies.length === 0 && query ? (
-        <Center py={50}>
-          <Stack align="center" gap="xs">
-            <Text size="xl" fw={500}>
-              Nothing found 🔍
-            </Text>
-            <Text c="dimmed">
-              Nothing found for "{query}". Try another title.
-            </Text>
-          </Stack>
-        </Center>
-      ) : (
-        /* 4. Відображення списку (якщо дані є) */
-        <>
-          <MovieList moviesList={movies} />
-
-          {/* Додаємо компонент пагінації */}
-          {totalPages > 1 && (
-            <Center mt="xl" mb="xl">
-              <Pagination
-                value={page}
-                onChange={handlePageChange}
-                total={totalPages}
-                color="blue"
-                withEdges
-              />
-            </Center>
-          )}
-        </>
-      )}
+      {renderContent()}
     </Stack>
   );
 };

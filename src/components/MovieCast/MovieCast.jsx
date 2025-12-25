@@ -11,6 +11,7 @@ import {
   Badge,
 } from "@mantine/core";
 import { getMovieCast } from "../../api/tmdb-api";
+import { ErrorPlaceholder } from "../ErrorPlaceholder";
 
 const MovieCast = () => {
   const { movieId } = useParams();

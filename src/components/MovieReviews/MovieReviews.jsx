@@ -12,6 +12,7 @@ import {
   Group,
 } from "@mantine/core";
 import { getMovieReviews } from "../../api/tmdb-api";
+import { ErrorPlaceholder } from "../ErrorPlaceholder";
 
 const MovieReviews = () => {
   const { movieId } = useParams();

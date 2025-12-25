@@ -1,8 +1,8 @@
 // src/api/tmdb-api.js
 import axios from "axios";
 
-//const apiBearer = import.meta.env.VITE_API_BEARER;
-const apiBearer = ""; // for testing purposes
+const apiBearer = import.meta.env.VITE_API_BEARER;
+//const apiBearer = ""; // for testing purposes
 
 if (!apiBearer) {
   console.error("VITE_API_BEARER is missing in your .env file!");
