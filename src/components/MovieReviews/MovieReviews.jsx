@@ -78,14 +78,14 @@ const MovieReviews = () => {
               <Text size="sm" fw={700}>
                 {author}
               </Text>
-              <Text size="xs" c="dimmed">
+              {/* <Text size="xs" c="dimmed">
                 Author from TMDB
-              </Text>
+              </Text> */}
             </div>
           </Group>
 
           <Spoiler maxHeight={120} showLabel="Show more" hideLabel="Hide">
-            <Text size="sm" style={{ lineHeight: 1.6 }}>
+            <Text size="md" style={{ lineHeight: 1.6 }}>
               {content}
             </Text>
           </Spoiler>
