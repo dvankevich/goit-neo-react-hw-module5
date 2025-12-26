@@ -9,10 +9,6 @@ export default async function handler(req, res) {
   // Отримуємо ключ із змінних оточення (налаштовується у Vercel або .env.local)
   const API_KEY = process.env.TMDB_TOKEN;
 
-  //console.log("All env vars:", Object.keys(process.env));
-  // console.log("API_KEY:", API_KEY)
-  // console.log("All env vars:", Object.keys(process.env).filter(k => k.includes('TMDB')));
-
   // 1. ПЕРЕВІРКА СЕКРЕТНОГО ЗАГОЛОВКА
   // Ви можете придумати будь-яку строку. Вона має бути однаковою тут і на фронтенді.
   const EXPECTED_SECRET = process.env.INTERNAL_APP_SECRET;
