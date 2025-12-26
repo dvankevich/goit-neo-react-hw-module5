@@ -9,6 +9,7 @@ export default async function handler(req, res) {
   // Отримуємо ключ із змінних оточення (налаштовується у Vercel або .env.local)
   const API_KEY = process.env.TMDB_TOKEN;
 
+  //console.log("All env vars:", Object.keys(process.env));
   // console.log("API_KEY:", API_KEY)
   // console.log("All env vars:", Object.keys(process.env).filter(k => k.includes('TMDB')));
 
@@ -24,15 +25,16 @@ export default async function handler(req, res) {
   // 2. ПЕРЕВІРКА REFERER (Тільки для Production)
   if (process.env.NODE_ENV === "production") {
     const referer = req.headers.referer || "";
-    // Замініть 'your-app-name.vercel.app' на вашу реальну адресу після деплою
-    if (
-      !referer.includes(
-        "goit-neo-react-hw-module5-git-verce-a11922-dvankevichs-projects.vercel.app"
-      )
-    ) {
-      return res
-        .status(403)
-        .json({ error: "Access denied: Unauthorized origin" });
+
+    // Дозволяємо будь-який субдомен на vercel.app, що належить вашому акаунту
+    // (зазвичай назва проєкту є частиною URL)
+    const isVercel =
+      referer.includes("goit-neo-react-hw-module5") &&
+      referer.includes(".vercel.app");
+    const isLocal = referer.includes("localhost");
+
+    if (!isVercel && !isLocal) {
+      return res.status(403).json({ error: "Access denied" });
     }
   }
 
