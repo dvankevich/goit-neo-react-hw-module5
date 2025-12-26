@@ -13,7 +13,7 @@ npm install -g vercel
 ```
 
 
-2. **Створіть файл `.env.local**` у корені проєкту:
+2. Створіть файл `.env.local**` у корені проєкту:
 ```text
 TMDB_TOKEN=ваш_секретний_bearer_token_тут
 
@@ -21,7 +21,7 @@ TMDB_TOKEN=ваш_секретний_bearer_token_тут
 
 
 *(Важливо: не використовуйте префікс VITE_, щоб ключ не потрапив у клієнтський бандл).*
-3. **Підготуйте оточення** (особливо для Linux/macOS):
+3. Підготуйте оточення (особливо для Linux/macOS):
 Якщо при запуску ви бачите помилку "TMDB_TOKEN is missing", виконайте в терміналі:
 ```bash
 export TMDB_TOKEN=ваш_секретний_token
@@ -29,7 +29,7 @@ export TMDB_TOKEN=ваш_секретний_token
 ```
 
 
-4. **Запустіть сервер розробки**:
+4. Запустіть сервер розробки:
 ```bash
 vercel dev
 
@@ -44,7 +44,7 @@ vercel dev
 
 Коли код готовий до публікації:
 
-1. **Створіть/перевірте `vercel.json**` у корені:
+1. Створіть/перевірте `vercel.json` у корені:
 ```json
 {
   "cleanUrls": true,
@@ -63,14 +63,14 @@ vercel dev
 ```
 
 
-2. **Запушіть код у ваш репозиторій** (GitHub/GitLab).
-3. **Налаштуйте змінні в панелі Vercel**:
+2. Запушіть код у ваш репозиторій** (GitHub/GitLab).
+3. Налаштуйте змінні в панелі Vercel**:
 * Зайдіть у ваш проєкт на сайті Vercel.
 * Перейдіть у **Settings** -> **Environment Variables**.
 * Додайте `TMDB_TOKEN` з вашим ключем.
 
 
-4. **Створіть новий Deployment**, щоб Vercel підхопив налаштування та змінні.
+4. Створіть новий Deployment, щоб Vercel підхопив налаштування та змінні.
 
 ---
 
@@ -96,7 +96,7 @@ import { formatMovieData, formatCastData, formatReviewData } from "./formatTmdbD
 
 // Звертаємося до локального /api замість api.themoviedb.org
 const api = axios.create({
-  baseURL: "/api", 
+  baseURL: "/api",
 });
 
 /**
