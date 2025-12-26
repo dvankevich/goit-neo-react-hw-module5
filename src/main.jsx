@@ -7,7 +7,7 @@ import "@mantine/core/styles.css"; // 2. Імпортуємо базові ст�
 import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
 import App from "./App.jsx";
-//import { ErrorPlaceholder } from "./components/ErrorPlaceholder.jsx";
+import { ErrorPlaceholder } from "./components/ErrorPlaceholder.jsx";
 import { ErrorFallback } from "./components/ErrorFallback.jsx";
 
 createRoot(document.getElementById("root")).render(

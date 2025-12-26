@@ -4,6 +4,7 @@ import MovieList from "../components/MovieList/MovieList";
 import { getTrendingMovies } from "../api/tmdb-api";
 import { Title } from "@mantine/core";
 import { MovieGridSkeleton } from "../components/MovieCard/MovieGridSkeleton";
+import { ErrorPlaceholder } from "../components/ErrorPlaceholder";
 
 const HomePage = () => {
   const [trendingMoviesList, setTrendingMoviesList] = useState([]);
