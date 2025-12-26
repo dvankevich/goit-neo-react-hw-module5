@@ -1,10 +1,18 @@
 // src/api/tmdb-api.js
 import axios from "axios";
-import { formatMovieData, formatCastData, formatReviewData } from "./formatTmdbData.js";
+import {
+  formatMovieData,
+  formatCastData,
+  formatReviewData,
+} from "./formatTmdbData.js";
 
 // Тепер звертаємося до власного сервера
 const tmdbInstance = axios.create({
-  baseURL: "/api", 
+  baseURL: "/api",
+  headers: {
+    // Vite автоматично замінить це на значення з .env.local при збірці
+    "x-app-usage-token": import.meta.env.VITE_INTERNAL_APP_SECRET,
+  },
 });
 
 // Допоміжна функція для запитів до нашої серверної функції
@@ -39,7 +47,11 @@ export const getMovieReviews = async (movieId) => {
 };
 
 export const searchMovies = async (query, page = 1) => {
-  const data = await fetchFromProxy("search/movie", { query, page, include_adult: false });
+  const data = await fetchFromProxy("search/movie", {
+    query,
+    page,
+    include_adult: false,
+  });
   return {
     ...data,
     results: data.results.map(formatMovieData),
