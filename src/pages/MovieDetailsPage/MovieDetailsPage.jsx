@@ -47,7 +47,6 @@ const MovieDetailsPage = () => {
         setError(null);
         const data = await getMovieDetails(movieId);
         setMovie(data);
-        console.log(data);
       } catch (error) {
         setError(error.message || "Network error");
       } finally {

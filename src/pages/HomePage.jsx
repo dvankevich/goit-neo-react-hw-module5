@@ -18,7 +18,6 @@ const HomePage = () => {
         setError(null);
         const movies = await getTrendingMovies();
         setTrendingMoviesList(movies);
-        console.log(movies);
       } catch (error) {
         console.error("Error fetching trending movies:", error);
         setError(error.message || "Failed to load trending movies");
